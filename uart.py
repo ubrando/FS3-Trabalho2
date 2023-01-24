@@ -18,13 +18,13 @@ def close():
 def send_message(command, valor=b'', tamanho = 7):
     global porta
     global matricula
-    if porta.is_open():
-        m1 = command+ bytes(matricula) + valor
+    if porta.isOpen():
+        m1 = command + bytes(matricula) + valor
         m2 = calc_CRC(m1, tamanho).to_bytes(2, 'little')
         msg = m1 + m2
         porta.write(msg)
     else:
-        print("Failed to send message")
+        print("Não foi possível enviar a mensagem.")
 
 def receive_message():
     global porta
@@ -42,8 +42,8 @@ def receive_message():
         else:
             print('Mensagem recebida: {}'.format(buffer))
             print('CRC16 invalido')
-            return None
+            return 
     else:
-        return None
+        return 
 
 

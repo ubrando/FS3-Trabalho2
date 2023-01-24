@@ -40,3 +40,25 @@ class PID:
       self.sinal_de_controle = self.sinal_de_controle_MIN
 
     return self.sinal_de_controle
+
+  def output(self, referencia, saida_medida):
+    erro = referencia - saida_medida
+    self.erro_total += erro  
+
+    if self.erro_total >= self.sinal_de_controle_MAX:
+        self.erro_total = self.sinal_de_controle_MAX
+    elif self.erro_total <= self.sinal_de_controle_MIN:
+        self.erro_total = self.sinal_de_controle_MIN
+
+    delta_error = erro - self.erro_anterior 
+    self.sinal_de_controle = self.Kp * erro + (self.Ki * self.T) * self.erro_total + (
+            self.Kd / self.T) * delta_error 
+
+    if self.sinal_de_controle >= self.sinal_de_controle_MAX:
+        self.sinal_de_controle = self.sinal_de_controle_MAX
+    elif self.sinal_de_controle <= self.sinal_de_controle_MIN:
+        self.sinal_de_controle = self.sinal_de_controle_MIN
+
+    self.erro_anterior = erro
+
+    return self.sinal_de_controle
